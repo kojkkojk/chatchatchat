@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* 인덱스 라우트 */}
           <Route index element={<Home />} />
-          <Route path="/chzzkNick" element={<StreamComponent />} />
+          <Route path="/stream" element={<StreamComponent />} />
         </Route>
       </Routes>
     </>
