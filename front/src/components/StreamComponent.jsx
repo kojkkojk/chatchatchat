@@ -50,9 +50,9 @@ const StreamComponent = () => {
   }, [theme]);
   useEffect(() => {
     const wsHost = `${window.location.protocol}//${window.location.host}`;
-    const eventSource = new EventSource(`${wsHost}/stream/?channelID=${id}`);
+    const eventSource = new EventSource(`${wsHost}/stream?channelID=${id}`);
     // const eventSource = new EventSource(
-    //   `http://localhost:8080/stream/?channelID=${id}`
+    //   `http://localhost:8080/stream?channelID=${id}`
     // );
 
     eventSource.onmessage = (event) => {

@@ -17,7 +17,7 @@ function Home() {
 
   const handleGoToUser = (id, themes) => {
     // 동적으로 userId를 포함한 URL로 이동
-    navigate(`/channelid?id=${id}&theme=${themes}`);
+    navigate(`/chzzkNick?id=${id}&theme=${themes}`);
   };
   return (
     <div className="urlCreate">

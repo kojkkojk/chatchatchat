@@ -24,11 +24,13 @@ const client = new ChzzkClient(options);
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
+
 app.get('/stream', async (req, res) => {
   // 헤더 설정 (chunked 전송과 텍스트 스트리밍)
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
+
   const params = url.parse(req.url, true).query;
   const channelID = params.channelID; //채널 uid
   try {
