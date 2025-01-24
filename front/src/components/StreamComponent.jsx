@@ -49,12 +49,10 @@ const StreamComponent = () => {
     }
   }, [theme]);
   useEffect(() => {
-    const wsHost = `${window.location.protocol}//${window.location.host}`;
-    const eventSource = new EventSource(`${wsHost}/stream?channelID=${id}`);
-    // const eventSource = new EventSource(
-    //   `http://localhost:8080/stream?channelID=${id}`
-    // );
-
+    // const eventSource = new EventSource(`/stream?channelID=${id}`);
+    const eventSource = new EventSource(
+      `http://localhost:8080/stream?channelID=${id}`
+    );
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const parseData = JSON.parse(data);
@@ -63,12 +61,10 @@ const StreamComponent = () => {
         return updated.slice(-10); // 마지막 10개만 유지
       });
     };
-
-    eventSource.onerror = () => {
-      console.error('EventSource failed. Closing connection.');
+    eventSource.onerror = (error) => {
+      console.error(error);
       eventSource.close();
     };
-
     return () => {
       eventSource.close();
     };

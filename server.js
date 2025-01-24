@@ -1,17 +1,13 @@
 import express from 'express';
 import { ChzzkClient } from 'chzzk';
-import url, { fileURLToPath } from 'url';
+import url from 'url';
 import cors from 'cors';
-import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const app = express();
 const port = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use(express.static(path.join(__dirname, '/dist')));
 const options = {
   baseUrls: {
     chzzkBaseUrl: 'https://api.chzzk.naver.com',
@@ -20,10 +16,6 @@ const options = {
 };
 
 const client = new ChzzkClient(options);
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/dist/index.html'));
-});
 
 app.get('/stream', async (req, res) => {
   // 헤더 설정 (chunked 전송과 텍스트 스트리밍)
@@ -44,6 +36,10 @@ app.get('/stream', async (req, res) => {
     chzzkChat.on('connect', () => {
       console.log('Connected');
     });
+    // 재연결 (방송 시작 시)
+    chzzkChat.on('reconnect', (newChatChannelId) => {
+      console.log(`Reconnected to ${newChatChannelId}`);
+    });
     // 일반 채팅
     chzzkChat.on('chat', (chat) => {
       const message = chat.hidden ? '[블라인드 처리 됨]' : chat.message;
@@ -59,7 +55,7 @@ app.get('/stream', async (req, res) => {
       console.log('Connection closed by client.');
     });
   } catch (error) {
-    res.status(500).json({ error: 'error' });
+    res.status(500).send(error);
   }
 });
 
